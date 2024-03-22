@@ -8,9 +8,10 @@ const Login = () => {
     password: "",
     email: "",
   });
+
   const navigate = useNavigate();
 
-  //   axios.defaults.withCredentials = true;
+  axios.defaults.withCredentials = true;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,10 +19,14 @@ const Login = () => {
       .post("http://localhost:5000/login", values)
       .then((res) => {
         console.log(res);
-        if (res.data.Status === "Success") {
+        if (res.data.Status === "loginSuccess") {
           navigate("/");
+        } else if (res.data.Status === "emailNotFound") {
+          alert(res.data.Message);
+        } else if (res.data.Status === "wrongPassword") {
+          alert(res.data.Message);
         } else {
-          console.log(res.data.Message);
+          console.log(res.data);
         }
       })
       .catch((err) => console.log(err));
